@@ -4,6 +4,7 @@ import Counter from './components/Counter'
 import ClassCounter from './components/ClassCounter';
 import PostList from './components/PostList'
 import MyButton from './components/UI/button/MyButton';
+import MyInput from './components/UI/input/MyInput';
 
 function App() {
   const [posts, setPosts] = useState([
@@ -20,8 +21,8 @@ function App() {
     <div className="App">
 
       <form>
-        <input type="text" placeholder='Название поста' />
-        <input type="text" placeholder='Описание поста' />
+        <MyInput type="text" placeholder='Название поста' />
+        <MyInput type="text" placeholder='Описание поста' />
         <MyButton> Создать поста </MyButton>
       </form>
 
