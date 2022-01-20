@@ -8,20 +8,14 @@ import MyModal from './components/UI/modal/MyModal';
 import MyButton from './components/UI/button/MyButton';
 import { usePosts } from './hooks/usePosts';
 import PostService from './API/PostService'
+import Loader from './components/UI/Loader/Loader'
 
 function App() {
-  const [posts, setPosts] = useState([
-    { id: 1, title: 'a', body: 'Новая парадигма реальности: чистосердечное признание облегчает душу' },
-    { id: 2, title: 'b', body: 'Независимые СМИ потому и независимы, что спикеры палаты госдумы негодуют' },
-    { id: 3, title: 'd', body: 'Звук клавиш печатной машинки стал нашим флагом в борьбе с ложью' },
-    { id: 4, title: 'c', body: 'Органический трафик ни к чему нас не обязывает' },
-    { id: 5, title: 'e', body: 'Сложно сказать, почему парад бытовой техники оказался началом великой войны' },
-    { id: 6, title: 'd', body: 'Нашу победу сопровождал треск разлетающихся скреп' },
-    { id: 7, title: 'h', body: 'Курс на социально-ориентированный национальный проект связывает нас с нашим прошлым' }
-  ])
+  const [posts, setPosts] = useState([])
 
   const [filter, setFilter] = useState({ sort: '', query: '' })
   const [modal, setModal] = useState(false)
+  const [isPostsLoading, setIsPostLoading] = useState(false)
 
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
 
@@ -35,8 +29,14 @@ function App() {
   }
 
   async function fetchPosts() {
-    const posts = await PostService.getAll();
-    setPosts(posts)
+    setIsPostLoading(true)
+
+    setTimeout(async () => {
+      const posts = await PostService.getAll();
+      setPosts(posts)
+      setIsPostLoading(false)
+    }, 1000);
+
   }
 
   const removePost = (post) => {
@@ -46,7 +46,7 @@ function App() {
   return (
     <div className="App">
 
-      <MyButton style={{ marginTop: 30 }} onClick={() => setModal(true)}>Создать пользователя</MyButton>
+      <MyButton style={{ marginTop: 30 }} onClick={() => setModal(true)}>Create User</MyButton>
 
       <MyModal visible={modal} setVisible={setModal}>
         <PostForm create={createPost} />
@@ -56,7 +56,11 @@ function App() {
 
       <PostFilter filter={filter} setFilter={setFilter} />
 
-      <PostList posts={sortedAndSearchedPosts} remove={removePost} title="Список постов" />
+      {isPostsLoading
+        ? <div style={{ display: 'flex', justifyContent: 'center', marginTop: 50 }}><Loader /></div>
+        : <PostList posts={sortedAndSearchedPosts} remove={removePost} title="Список постов" />
+      }
+
 
     </div>
   );
