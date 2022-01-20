@@ -9,15 +9,20 @@ import MyButton from './components/UI/button/MyButton';
 import { usePosts } from './hooks/usePosts';
 import PostService from './API/PostService'
 import Loader from './components/UI/Loader/Loader'
+import { useFetching } from './hooks/useFetching';
 
 function App() {
   const [posts, setPosts] = useState([])
 
   const [filter, setFilter] = useState({ sort: '', query: '' })
   const [modal, setModal] = useState(false)
-  const [isPostsLoading, setIsPostLoading] = useState(false)
 
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
+
+  const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
+    const posts = await PostService.getAll();
+    setPosts(posts)
+  })
 
   useEffect(() => {
     fetchPosts();
@@ -26,17 +31,6 @@ function App() {
   const createPost = (newPost) => {
     setPosts([...posts, newPost])
     setModal(false)
-  }
-
-  async function fetchPosts() {
-    setIsPostLoading(true)
-
-    setTimeout(async () => {
-      const posts = await PostService.getAll();
-      setPosts(posts)
-      setIsPostLoading(false)
-    }, 1000);
-
   }
 
   const removePost = (post) => {
@@ -55,6 +49,10 @@ function App() {
       <hr style={{ margin: '15px 0' }} />
 
       <PostFilter filter={filter} setFilter={setFilter} />
+
+      {postError &&
+        <h1>Произошла ошибка ${postError}</h1>
+      }
 
       {isPostsLoading
         ? <div style={{ display: 'flex', justifyContent: 'center', marginTop: 50 }}><Loader /></div>
