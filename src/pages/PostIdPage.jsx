@@ -21,7 +21,7 @@ function PostIdPage(props) {
 
 
     useEffect(() => {
-        console.log(params.id)
+
         fetchPostById();
         fetchCommentsById()
     }, []);

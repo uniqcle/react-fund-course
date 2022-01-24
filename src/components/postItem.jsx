@@ -6,7 +6,6 @@ import { useHistory } from 'react-router-dom'
 const PostItem = ({ post, number, remove }) => {
     const router = useHistory();
 
-    console.log(router)
 
     return (
         <>
