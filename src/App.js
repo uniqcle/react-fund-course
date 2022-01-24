@@ -3,14 +3,28 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import './styles/App.css'
 import Navbar from './components/UI/Navbar/Navbar';
 import AppRouter from './components/AppRouter';
+import { AuthContext } from './context';
 
 function App() {
-  return (
-    <BrowserRouter>
-      <Navbar />
-      <AppRouter />
+  const [isAuth, setIsAuth] = useState(false)
 
-    </BrowserRouter>
+  useEffect(() => {
+    if (localStorage.getItem('auth')) {
+      setIsAuth(true)
+    }
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{
+      isAuth,
+      setIsAuth
+    }}>
+      <BrowserRouter>
+        <Navbar />
+        <AppRouter />
+
+      </BrowserRouter>
+    </AuthContext.Provider>
   )
 }
 
