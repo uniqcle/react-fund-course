@@ -3,6 +3,7 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import Posts from '../pages/Posts';
 import About from '../pages/About'
 import Errors from '../pages/Errors';
+import PostIdPage from '../pages/PostIdPage';
 
 function AppRouter(props) {
     return (
@@ -14,8 +15,11 @@ function AppRouter(props) {
             <Route path="/about" >
                 <About />
             </Route>
-            <Route path="/posts">
+            <Route exact path="/posts">
                 <Posts />
+            </Route>
+            <Route exact path="/posts/:id">
+                <PostIdPage />
             </Route>
             <Route path="/errors">
                 <Errors />
