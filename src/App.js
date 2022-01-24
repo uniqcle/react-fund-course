@@ -1,14 +1,15 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react'
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import About from './pages/About'
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import './styles/App.css'
+import Navbar from './components/UI/Navbar/Navbar';
+import AppRouter from './components/AppRouter';
 
 function App() {
   return (
     <BrowserRouter>
-      <Route path="/about">
-        <About />
-      </Route>
+      <Navbar />
+      <AppRouter />
+
     </BrowserRouter>
   )
 }
